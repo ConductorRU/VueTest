@@ -1,5 +1,5 @@
 <template>
-	<td class="cell"></td>
+	<td class="cell" @click="strike">{{mark}}</td>
 </template>
 <script>
 	export default
@@ -9,6 +9,26 @@
 			return {
 				frozen: false, //может ли игрок помещать что-то в ячейку
 				mark: '' //содержит O или X
+			}
+		},
+		created()
+		{
+			Event.$on('clearCell', () => 
+			{
+				this.mark = '';
+				this.frozen = false;
+			});
+			Event.$on('freeze', () => this.frozen = true );
+		},
+		methods: {
+			strike()
+			{
+				if(!this.frozen)
+				{
+					this.mark = this.$parent.activePlayer;
+					this.frozen = true;
+					Event.$emit('strike', this.name);
+				}
 			}
 		}
 	}

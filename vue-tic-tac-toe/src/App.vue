@@ -1,10 +1,19 @@
 <template>
-  <div id="app">
-    <div id="details">
-			<h1>Tic Tac Toe</h1>
+	<div>
+		<div class="scoreBoard">
+			<span>O победил {{wins.O}} раз</span>
+			<h2>Табло</h2>
+			<span>X победил {{wins.X}} раз</span>
 		</div>
-		<grid></grid>
-  </div>
+		<div id="app">
+			<div id="details">
+				<h1>Tic Tac Toe</h1>
+				<h2>Раунд №{{matches + 1}}</h2>
+			</div>
+			<grid></grid>
+			<button class="restart" @click="restart">Перезапуск</button>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -21,7 +30,19 @@ export default {
 				X: 0
 			}
     }
-  }
+  },
+	created()
+	{
+		Event.$on('win', winner => this.wins[winner]++);
+	},
+	methods: {
+		restart()
+		{
+			Event.$emit('clearCell');
+			Event.$emit('gridReset');
+			this.matches++;
+		}
+	}
 }
 </script>
 
@@ -54,7 +75,8 @@ export default {
 		background-color: #e74c3c;
 		color: #fff;
 		border: 0;
-		border-bottom-left-radius, border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
 		font-family: 'Dosis', sans-serif;
 		font-size: 1.4em;
 		font-weight: bold;
@@ -76,9 +98,9 @@ export default {
 		width: 100%;
 		height: 15px;
 		background-color: #16a085;
-		box-shadow: 10px solid #fff;
+		box-sizing: border-box;
 		padding: 20px;
-		overflow-x: none;
+		overflow: hidden;
 	}
 	.scoreboard h2
 	{
