@@ -4,7 +4,13 @@
 <script>
 	export default
 	{
-		data() {}
+		props: ['name'],
+		data() {
+			return {
+				frozen: false, //может ли игрок помещать что-то в ячейку
+				mark: '' //содержит O или X
+			}
+		}
 	}
 </script>
 
